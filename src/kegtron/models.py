@@ -7,7 +7,6 @@ parsed from BLE manufacturer advertisements.
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Optional
 
 
 class PortState(IntEnum):

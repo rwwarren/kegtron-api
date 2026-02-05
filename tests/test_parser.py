@@ -3,7 +3,6 @@
 import pytest
 
 from kegtron.parser import (
-    KEGTRON_DATA_LENGTH,
     KEGTRON_MANUFACTURER_ID,
     ParseError,
     extract_device_id,

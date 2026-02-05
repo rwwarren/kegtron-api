@@ -27,10 +27,8 @@ import logging
 from typing import List, Optional
 
 from bleak import BleakScanner
-from bleak.backends.device import BLEDevice
-from bleak.backends.scanner import AdvertisementData
 
-from .models import KegtronDevice, KegtronReading
+from .models import KegtronDevice
 from .parser import (
     KEGTRON_MANUFACTURER_ID,
     ParseError,
