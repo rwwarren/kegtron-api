@@ -130,6 +130,17 @@ class TestParseManufacturerData:
         with pytest.raises(ParseError, match="Invalid data length"):
             parse_manufacturer_data(bytes())
 
+    def test_parse_generic_exception_wrapped(self):
+        """Test that generic exceptions during parsing are wrapped in ParseError."""
+        from unittest.mock import patch
+
+        data = create_test_data()
+
+        # Mock PortState to raise an exception during parsing
+        with patch('kegtron.parser.PortState', side_effect=ValueError("Mocked error")):
+            with pytest.raises(ParseError, match="Failed to parse manufacturer data"):
+                parse_manufacturer_data(data)
+
 
 class TestExtractDeviceId:
     """Tests for extract_device_id function."""

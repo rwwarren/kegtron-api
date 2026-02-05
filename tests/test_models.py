@@ -121,6 +121,23 @@ class TestKegtronReading:
         )
         assert reading.is_empty is True
 
+    def test_is_low_false(self, sample_reading):
+        """Test is_low when keg has plenty of beer (74% remaining)."""
+        assert sample_reading.is_low is False
+
+    def test_is_low_true(self):
+        """Test is_low when keg is below 15% remaining."""
+        reading = KegtronReading(
+            keg_size_ml=19550,
+            volume_start_ml=19550,
+            volume_dispensed_ml=17000,  # ~13% remaining
+            port_count=1,
+            port_index=0,
+            port_state=PortState.ENABLED,
+            beer_name="Low Keg",
+        )
+        assert reading.is_low is True
+
     def test_volume_remaining_oz(self, sample_reading):
         """Test volume_remaining_oz conversion."""
         # 14550 ml / 29.5735 = ~491.9 oz
