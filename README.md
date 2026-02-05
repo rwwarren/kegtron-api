@@ -280,6 +280,8 @@ Port state byte layout:
 - Bits 4-5: Port index (0-3)
 - Bits 0-1: Port state (0=disabled, 1=enabled)
 
+Source: https://kegtron.com/docs/Gen1BLEMessageFormat.pdf (Also in [Gen1BLEMessageFormat.pdf](Gen1BLEMessageFormat.pdf)
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
