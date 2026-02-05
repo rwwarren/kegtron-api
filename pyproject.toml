@@ -39,10 +39,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ryanwarren/kegtron-api"
-Documentation = "https://github.com/ryanwarren/kegtron-api#readme"
-Repository = "https://github.com/ryanwarren/kegtron-api"
-Issues = "https://github.com/ryanwarren/kegtron-api/issues"
+Homepage = "https://github.com/rwwarren/kegtron-api"
+Documentation = "https://github.com/rwwarren/kegtron-api#readme"
+Repository = "https://github.com/rwwarren/kegtron-api"
+Issues = "https://github.com/rwwarren/kegtron-api/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/kegtron"]

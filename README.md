@@ -1,7 +1,7 @@
 # Kegtron Python API
 
-[![Tests](https://github.com/ryanwarren/kegtron-api/actions/workflows/tests.yml/badge.svg)](https://github.com/ryanwarren/kegtron-api/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/ryanwarren/kegtron-api/branch/main/graph/badge.svg)](https://codecov.io/gh/ryanwarren/kegtron-api)
+[![Tests](https://github.com/rwwarren/kegtron-api/actions/workflows/tests.yml/badge.svg)](https://github.com/rwwarren/kegtron-api/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/rwwarren/kegtron-api/branch/main/graph/badge.svg)](https://codecov.io/gh/rwwarren/kegtron-api)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -24,7 +24,7 @@ pip install kegtron
 Or install from source:
 
 ```bash
-git clone https://github.com/ryanwarren/kegtron-api.git
+git clone https://github.com/rwwarren/kegtron-api.git
 cd kegtron-api
 pip install -e .
 ```
@@ -246,7 +246,7 @@ Calculations:
 ### Setup
 
 ```bash
-git clone https://github.com/ryanwarren/kegtron-api.git
+git clone https://github.com/rwwarren/kegtron-api.git
 cd kegtron-api
 pip install -e ".[dev]"
 ```
