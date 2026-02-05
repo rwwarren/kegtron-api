@@ -1,5 +1,10 @@
 # Kegtron Python API
 
+[![Tests](https://github.com/ryanwarren/kegtron-api/actions/workflows/tests.yml/badge.svg)](https://github.com/ryanwarren/kegtron-api/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/ryanwarren/kegtron-api/branch/main/graph/badge.svg)](https://codecov.io/gh/ryanwarren/kegtron-api)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Python library for interacting with [Kegtron](https://kegtron.com/) BLE keg monitoring devices.
 
 ## Features
