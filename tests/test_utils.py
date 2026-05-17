@@ -90,6 +90,13 @@ class TestFormatVolume:
         assert format_volume(1000, "OZ") == format_volume(1000, "oz")
         assert format_volume(1000, "ML") == format_volume(1000, "ml")
 
+    def test_format_zero_volume(self):
+        """Zero volume formats cleanly for every supported unit."""
+        for unit in ("oz", "ml", "l", "gal", "pint"):
+            result = format_volume(0, unit)
+            # All should start with '0.0' regardless of unit suffix
+            assert result.startswith("0.0"), f"got {result!r} for {unit!r}"
+
 
 class TestCalculateDrinksRemaining:
     """Tests for calculate_drinks_remaining function."""
@@ -157,6 +164,15 @@ class TestDetectPour:
 
         # 20ml pour with 50ml threshold should not detect
         result = detect_pour(5020, 5000, min_pour_ml=50)
+        assert result is None
+
+    def test_exact_threshold_boundary(self):
+        """A diff equal to min_pour_ml counts as a pour (>= comparison)."""
+        result = detect_pour(5030, 5000, min_pour_ml=30)
+        assert result == 30
+
+        # One ml below the threshold does not
+        result = detect_pour(5029, 5000, min_pour_ml=30)
         assert result is None
 
 

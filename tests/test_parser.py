@@ -130,6 +130,71 @@ class TestParseManufacturerData:
         with pytest.raises(ParseError, match="Invalid data length"):
             parse_manufacturer_data(bytes())
 
+    def test_parse_all_zero_bytes(self):
+        """Test parsing 27 zero bytes (unconfigured/idle device)."""
+        reading = parse_manufacturer_data(bytes(27))
+        assert reading.keg_size_ml == 0
+        assert reading.volume_start_ml == 0
+        assert reading.volume_dispensed_ml == 0
+        assert reading.port_count == 0
+        assert reading.port_index == 0
+        assert reading.port_state == PortState.DISABLED
+        assert reading.beer_name == ""
+
+    def test_parse_multibyte_utf8_beer_name(self):
+        """Test parsing a beer name containing multi-byte UTF-8 characters."""
+        # "Köln" is valid UTF-8 (5 bytes) — should round-trip cleanly
+        data = create_test_data(beer_name="Köln")
+        reading = parse_manufacturer_data(data)
+        assert reading.beer_name == "Köln"
+
+    def test_parse_truncated_utf8_uses_replacement(self):
+        """A multi-byte sequence split at the 20-byte boundary uses U+FFFD."""
+        # 19 ASCII bytes plus the first byte of a 2-byte UTF-8 sequence (0xC3)
+        # at position 26, leaving the continuation byte off the end.
+        data = bytearray(27)
+        # Header bytes (volumes + port state) zero
+        data[7:26] = b"A" * 19
+        data[26] = 0xC3  # leading byte of a 2-byte sequence, no continuation
+        reading = parse_manufacturer_data(bytes(data))
+        # The dangling 0xC3 should be replaced rather than raise
+        assert reading.beer_name.startswith("A" * 19)
+        assert "�" in reading.beer_name
+
+    def test_parse_port_counts_full_range(self):
+        """All port_count values 0..3 round-trip."""
+        for count in range(4):
+            data = create_test_data(port_count=count)
+            reading = parse_manufacturer_data(data)
+            assert reading.port_count == count
+
+    def test_parse_port_index_full_range(self):
+        """All port_index values 0..3 round-trip."""
+        for idx in range(4):
+            data = create_test_data(port_index=idx)
+            reading = parse_manufacturer_data(data)
+            assert reading.port_index == idx
+
+    def test_parse_roundtrip(self):
+        """Building bytes and parsing them yields the original values."""
+        data = create_test_data(
+            keg_size_ml=29337,
+            volume_start_ml=29000,
+            volume_dispensed_ml=12345,
+            port_count=2,
+            port_index=1,
+            port_state=1,
+            beer_name="Pilsner",
+        )
+        reading = parse_manufacturer_data(data)
+        assert reading.keg_size_ml == 29337
+        assert reading.volume_start_ml == 29000
+        assert reading.volume_dispensed_ml == 12345
+        assert reading.port_count == 2
+        assert reading.port_index == 1
+        assert reading.port_state == PortState.ENABLED
+        assert reading.beer_name == "Pilsner"
+
     def test_parse_generic_exception_wrapped(self):
         """Test that generic exceptions during parsing are wrapped in ParseError."""
         from unittest.mock import patch
@@ -173,6 +238,15 @@ class TestExtractDeviceId:
     def test_extract_none_input(self):
         """Test that None input returns None."""
         assert extract_device_id(None) is None
+
+    def test_extract_stops_at_non_hex(self):
+        """Trailing non-hex characters are excluded from the ID."""
+        # 'X' is not a hex character, so extraction must stop before it
+        assert extract_device_id("Kegtron F1EDC6XYZ") == "F1EDC6"
+
+    def test_extract_no_digits_after_kegtron(self):
+        """A name like 'Kegtron foo' has no hex ID and returns None."""
+        assert extract_device_id("Kegtron ZZZ") is None
 
 
 class TestIsKegtronDevice:
