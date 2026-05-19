@@ -83,7 +83,6 @@ class KegtronReading:
         """Check if the keg is empty (0% remaining)."""
         return self.volume_remaining_ml <= 0
 
-    @property
     def is_low(self, threshold: float = 15.0) -> bool:
         """Check if the keg is running low (below threshold %)."""
         return self.percent_remaining < threshold
